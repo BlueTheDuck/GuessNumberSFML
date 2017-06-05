@@ -11,6 +11,6 @@ Just a console game. You write a number between 0 and 100 and the game says "col
 Fuck the class and everything there. In my game there will be a title constatly tilting. There has to be a grid showing the numbers: if you click one and its wrong, a cross is put over it and the screen freezes/burns acording to how near you were
 
 ### Available resources:
-<b>Bubblegum<b>: A cute font with rounded letters
-<b>C++<b>: The programming language that we use in the class
-<b>SFML</b>: The library used in the GUI
+<b>Bubblegum</b>: A cute font with rounded letters<br>
+<b>C++</b>: The programming language that we use in the class<br>
+<b>SFML</b>: The library used in the GUI<br>
