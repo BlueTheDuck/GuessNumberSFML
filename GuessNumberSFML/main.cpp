@@ -25,8 +25,10 @@ sf::Font bubblegum;
 sf::Text titleText;
 sf::Clock titleNextFrame;
 sf::Vector2<int> m(50,0);
-AnimsSFML::Animation<sf::Text*> t( &titleText, (FRAMERATE * 0.5) );
+as::Animation<sf::Text*> t( &titleText, (FRAMERATE * 0.5) );
 //KeyFrames fs( 15 );
+
+//Try
 
 int main() {
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!" );
