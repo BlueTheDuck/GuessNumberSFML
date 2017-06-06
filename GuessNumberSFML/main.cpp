@@ -28,6 +28,8 @@ I leave a gap of 100px on the left and right to make it more apealing, and on th
 #include <iostream>
 #endif
 
+#define size 40
+
 using namespace std;
 
 ////Functions\\\\
@@ -47,7 +49,7 @@ sf::Clock titleNextFrame;
 sf::Vector2<int> m( 50, 0 );
 as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
 /*--[[Square showing number]]--*/
-sf::RectangleShape numPlace( sf::Vector2<float>( 30, 30 ) );
+sf::RectangleShape numPlace( sf::Vector2<float>( size, size ) );
 sf::Texture spNumPlaceBase;
 /*--[[Some debugging stuff]]--*/
 sf::RectangleShape usableArea( sf::Vector2<float>( W - 200, H - 100 ) );
@@ -121,7 +123,7 @@ int main() {
 		win.draw( usableArea );
 		for( int y = 0; y < 10; y++ ) {
 			for( int x = 0; x < 10; x++ ) {
-				numPlace.setPosition( x * 60, y * 60 );
+				numPlace.setPosition( x * ( 10 + size ) + 100, y * ( 10 + size ) + 100 );
 				win.draw( numPlace );
 			}
 		}
