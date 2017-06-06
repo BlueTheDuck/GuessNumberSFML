@@ -15,20 +15,29 @@
 #include <iostream>
 #endif
 
-
 using namespace std;
 
-bool loadRes();
-void centerText( sf::Text *t, sf::Vector2<int> cd );
+////Functions\\\\
+//Functionality
+void centerText( sf::Text *t, sf::Vector2<int> cd );//Duh...
+//Startup
+bool loadRes();//Find and load resources
+void init();//Reset game assets
 
+////Variables\\\\
+//GUI vars
+/*--[[For the title]]--*/
 sf::Font bubblegum;
 sf::Text titleText;
 sf::Clock titleNextFrame;
 sf::Vector2<int> m(50,0);
 as::Animation<sf::Text*> t( &titleText, (FRAMERATE * 0.5) );
-//KeyFrames fs( 15 );
+/*--[[Quare showing number]]--*/
+//sf::RectangleShape 
+//Mechanics vars
+bool * tried = new bool[100];//This var stores the numbers that were tried
+short tries = 5;//Tries left
 
-//Try
 
 int main() {
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!" );
@@ -75,6 +84,10 @@ int main() {
 		win.display();
 		t.ProcessFrame( t.actFrame );
 	}
+}
+
+void init() {
+
 }
 
 bool loadRes() {
