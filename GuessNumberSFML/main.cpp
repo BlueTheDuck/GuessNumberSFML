@@ -9,7 +9,6 @@
 #define H 600
 #define FRAMERATE 27
 
-//#include "AnimsSFML\AnimsSFML.hpp"
 #include "anims.cpp"
 
 #ifdef _DEBUG 
