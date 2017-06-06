@@ -21,7 +21,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="anims.cpp">
+    <ClCompile Include="..\..\AnimsSFML\AnimsSFML\anims.cpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -31,7 +31,7 @@
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="anims.hpp">
+    <ClInclude Include="..\..\AnimsSFML\AnimsSFML\anims.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
