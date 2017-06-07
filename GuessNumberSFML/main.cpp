@@ -60,7 +60,6 @@ int XAxisAligner = ( ( W - 200 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;//T
 int YAxisAligner = ( ( H - 90 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;
 /*--[[Some debugging stuff]]--*/
 sf::RectangleShape usableArea( sf::Vector2<float>( W - 200, H - 90 ) );
-sf::RectangleShape lilBoxy( sf::Vector2f(0,0) );
 //Mechanics vars
 sf::Vector2f mouse(0,0);
 short * tried = new short[100];//This var stores the numbers that were tried and their result
@@ -73,7 +72,7 @@ short * tried = new short[100];//This var stores the numbers that were tried and
 short tries = 5;//Tries left
 
 int main() {
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!" );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!",sf::Style::None );
 	win.setFramerateLimit( FRAMERATE );
 
 	if( false == loadRes() ) {
@@ -103,9 +102,6 @@ int main() {
 		//Usable area for numbers
 		usableArea.setPosition( sf::Vector2<float>((float)100.0,(float)90.0) );
 		usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
-
-		lilBoxy.setSize({titleText.getGlobalBounds().width, titleText.getGlobalBounds().height});
-		lilBoxy.setPosition({W/2- titleText.getGlobalBounds().width/2, 25});
 	}
 
 	sf::Event event;
@@ -173,7 +169,6 @@ int main() {
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
 			}
 		}
-		win.draw( lilBoxy );
 		win.draw( titleText );
 		win.display();
 		t.ProcessFrame( t.actFrame );
@@ -185,7 +180,7 @@ void init() {
 }
 
 int getNumberClicked( int x, int y ) {
-	sf::Vector2<int> boardClick( ( x - ( 100 + XAxisAligner ) ), ( y - ( 60 + YAxisAligner ) ) );//Store the coords relative to the game, not the top-left window corner
+	sf::Vector2<int> boardClick( ( x - ( 100 + XAxisAligner ) ), ( y - ( 90 + YAxisAligner ) ) );//Store the coords relative to the game, not the top-left window corner
 	sf::Vector2<int> gridClick(-1,-1);//Row and column clicked (x+y*10=number)
 	int number = -1;//Clicked number, if [number]<0||[number]>99 then nothing was clicked
 	//number = ( boardClick.x - ( boardClick.x % 10 ) ) + ( boardClick.y % 10 );
