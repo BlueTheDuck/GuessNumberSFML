@@ -84,6 +84,7 @@ short tries = 5;//Tries left
 int main() {
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::Default );
 	win.setFramerateLimit( FRAMERATE );
+	win.setMouseCursorVisible( false );
 
 	if( false == loadRes() ) {//Resources loading
 		return EXIT_FAILURE;
