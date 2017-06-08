@@ -60,6 +60,8 @@ int XAxisAligner = ( ( W - 200 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;//T
 int YAxisAligner = ( ( H - 90 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;
 /*--[[Some debugging stuff]]--*/
 sf::RectangleShape usableArea( sf::Vector2<float>( W - 200, H - 90 ) );
+sf::RectangleShape hundredPixels( sf::Vector2f( 2, 100 ) );
+sf::RectangleShape m(sf::Vector2f(3,3));//Put this in the mouse
 //Mechanics vars
 sf::Vector2f mouse(0,0);
 short * tried = new short[100];//This var stores the numbers that were tried and their result
@@ -71,8 +73,10 @@ short * tried = new short[100];//This var stores the numbers that were tried and
 */
 short tries = 5;//Tries left
 
+bool wh = false;
+
 int main() {
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!",sf::Style::None );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::Default );
 	win.setFramerateLimit( FRAMERATE );
 
 	if( false == loadRes() ) {
@@ -99,7 +103,9 @@ int main() {
 		number.setOutlineColor( sf::Color::Black );
 		number.setOutlineThickness( 1 );
 		number.setString( "0" );
-		//Usable area for numbers
+		//Debugging stuff
+		hundredPixels.setPosition(1,1);
+		hundredPixels.setFillColor( sf::Color::White );
 		usableArea.setPosition( sf::Vector2<float>((float)100.0,(float)90.0) );
 		usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
 	}
@@ -117,14 +123,20 @@ int main() {
 					win.setView( sf::View( visibleArea ) );}
 					break;
 				case sf::Event::KeyPressed:
-					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Escape ) )
+					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Escape ) ) {
 						win.close();
-					break;
+						break;
+					}
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::BackSpace ) ) {
 					}
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Return ) ) {
 						#ifdef _DEBUG
-						t.printDebug();
+						/*wh = !wh;
+						if( wh )
+							sf::Mouse::setPosition( sf::Vector2i( 8, 100 ), win );
+						else
+							sf::Mouse::setPosition( win.mapCoordsToPixel( sf::Vector2f( 8, 100 ) ), win );*/
+						//t.printDebug();
 						#endif // _DEBUG
 					}
 					break;
@@ -135,14 +147,17 @@ int main() {
 					if( event.mouseButton.y >= 90 && event.mouseButton.x >= 100 && event.mouseButton.x <= W - 100 )
 						getNumberClicked( event.mouseButton.x, event.mouseButton.y );*/
 					//mouse = win.mapCoordsToPixel(sf::Vector2f(event.mouseButton.x,event.mouseButton.y));
-					mouse = win.mapPixelToCoords( sf::Vector2i( sf::Mouse::getPosition( win ) ) );
+					/*mouse = win.mapPixelToCoords( sf::Vector2i( sf::Mouse::getPosition( win ) ) );
 					#ifdef _DEBUG
 					std::cout << "\nwin.mapPixelToCoords: ( " << mouse.x << "; " << mouse.y << " )\n" <<
 						"sf::Mouse::GetPosition(): (" << sf::Mouse::getPosition().x << ";" << sf::Mouse::getPosition().y << ")\n" <<
 						"sf::Mouse::getPosition( win ): (" << sf::Mouse::getPosition( win ).x << ";" << sf::Mouse::getPosition( win ).y << ")\n" <<
-						"event.mouseButton: (" << event.mouseButton.x << ";" << event.mouseButton.y << ")\n";
-					#endif // _DEBUG
-					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 )
+						"event.mouseButton: (" << event.mouseButton.x << ";" << event.mouseButton.y << ")\n" <<
+						"win.getPosition().x - sf::Mouse::getPosition().x (" << sf::Mouse::getPosition().x - win.getPosition().x << "; " << sf::Mouse::getPosition().y - win.getPosition().y << ")";
+					#endif // _DEBUG*/
+					mouse = sf::Vector2f( sf::Mouse::getPosition().x - win.getPosition().x, sf::Mouse::getPosition().y - win.getPosition().y );
+					std::cout << "( " << mouse.x << "; " << mouse.y << " )\n";
+					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 || true )
 						getNumberClicked( mouse.x, mouse.y );
 					break;
 				default:
@@ -170,6 +185,10 @@ int main() {
 			}
 		}
 		win.draw( titleText );
+		for( int i = 0; i < H; i+=200 ) {
+			hundredPixels.setPosition(8,i);
+			win.draw( hundredPixels );
+		}
 		win.display();
 		t.ProcessFrame( t.actFrame );
 	}
@@ -180,10 +199,9 @@ void init() {
 }
 
 int getNumberClicked( int x, int y ) {
-	sf::Vector2<int> boardClick( ( x - ( 100 + XAxisAligner ) ), ( y - ( 90 + YAxisAligner ) ) );//Store the coords relative to the game, not the top-left window corner
+	sf::Vector2<int> boardClick( ( x - ( 100 + XAxisAligner ) ), ( y - ( YAxisAligner + 90 ) ) );//Store the coords relative to the game, not the top-left window corner
 	sf::Vector2<int> gridClick(-1,-1);//Row and column clicked (x+y*10=number)
 	int number = -1;//Clicked number, if [number]<0||[number]>99 then nothing was clicked
-	//number = ( boardClick.x - ( boardClick.x % 10 ) ) + ( boardClick.y % 10 );
 	for( int col = 0; col <= 10; col++ ) {
 		if( boardClick.x > col*( BUT_SIZE + ROW_PADDING ) && boardClick.x < ( col*( BUT_SIZE + ROW_PADDING ) ) + BUT_SIZE ) {
 			std::cout << "X: " << col << std::endl;
