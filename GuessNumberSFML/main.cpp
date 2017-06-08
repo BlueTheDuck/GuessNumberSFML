@@ -158,7 +158,7 @@ int main() {
 					mose.setPosition(mouse);*/
 					std::cout << "( " << static_cast<sf::Vector2f>( sf::Mouse::getPosition( win ) ).x << "; " << static_cast<sf::Vector2f>( sf::Mouse::getPosition( win ) ).y << " )\n";
 					//std::cout << "( " << mose.getPosition().x << "; " << mose.getPosition().y << " )\n";
-					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 || true )
+					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 )
 						getNumberClicked( mouse.x, mouse.y );
 					break;
 				case sf::Event::MouseMoved:
@@ -168,7 +168,6 @@ int main() {
 			}
 		}
 		mouse = sf::Mouse::getPosition( win );
-		pointer.setPosition( win.mapPixelToCoords(mouse) );
 		//mose.setPosition( sf::Vector2f( sf::Mouse::getPosition( win ) ) );
 		//mose.setPosition( static_cast<sf::Vector2f>( sf::Mouse::getPosition( win ) ) );
 		win.clear();
@@ -192,7 +191,10 @@ int main() {
 			}
 		}
 		win.draw( titleText );
+		#ifdef _DEBUG
+		pointer.setPosition( win.mapPixelToCoords( mouse ) );
 		win.draw( pointer );
+		#endif // _DEBUG
 		win.display();
 		t.ProcessFrame( t.actFrame );
 	}
