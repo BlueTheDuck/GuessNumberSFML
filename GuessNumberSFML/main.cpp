@@ -60,10 +60,9 @@ int XAxisAligner = ( ( W - 200 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;//T
 int YAxisAligner = ( ( H - 90 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;
 /*--[[Some debugging stuff]]--*/
 sf::RectangleShape usableArea( sf::Vector2<float>( W - 200, H - 90 ) );
-sf::RectangleShape hundredPixels( sf::Vector2f( 2, 100 ) );
-sf::RectangleShape m(sf::Vector2f(3,3));//Put this in the mouse
+sf::CircleShape pointer(3);
 //Mechanics vars
-sf::Vector2f mouse(0,0);
+sf::Vector2i mouse(0,0);
 short * tried = new short[100];//This var stores the numbers that were tried and their result
 /* 0: Nothings
    1: Cold
@@ -76,7 +75,7 @@ short tries = 5;//Tries left
 bool wh = false;
 
 int main() {
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::Default );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
 	win.setFramerateLimit( FRAMERATE );
 
 	if( false == loadRes() ) {
@@ -104,10 +103,9 @@ int main() {
 		number.setOutlineThickness( 1 );
 		number.setString( "0" );
 		//Debugging stuff
-		hundredPixels.setPosition(1,1);
-		hundredPixels.setFillColor( sf::Color::White );
 		usableArea.setPosition( sf::Vector2<float>((float)100.0,(float)90.0) );
 		usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
+		pointer.setFillColor( sf::Color::Red );
 	}
 
 	sf::Event event;
@@ -130,6 +128,7 @@ int main() {
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::BackSpace ) ) {
 					}
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Return ) ) {
+						wh = !wh;
 						#ifdef _DEBUG
 						/*wh = !wh;
 						if( wh )
@@ -155,15 +154,23 @@ int main() {
 						"event.mouseButton: (" << event.mouseButton.x << ";" << event.mouseButton.y << ")\n" <<
 						"win.getPosition().x - sf::Mouse::getPosition().x (" << sf::Mouse::getPosition().x - win.getPosition().x << "; " << sf::Mouse::getPosition().y - win.getPosition().y << ")";
 					#endif // _DEBUG*/
-					mouse = sf::Vector2f( sf::Mouse::getPosition().x - win.getPosition().x, sf::Mouse::getPosition().y - win.getPosition().y );
-					std::cout << "( " << mouse.x << "; " << mouse.y << " )\n";
+					/*mouse = sf::Vector2f( sf::Mouse::getPosition().x - win.getPosition().x, sf::Mouse::getPosition().y - win.getPosition().y );
+					mose.setPosition(mouse);*/
+					std::cout << "( " << static_cast<sf::Vector2f>( sf::Mouse::getPosition( win ) ).x << "; " << static_cast<sf::Vector2f>( sf::Mouse::getPosition( win ) ).y << " )\n";
+					//std::cout << "( " << mose.getPosition().x << "; " << mose.getPosition().y << " )\n";
 					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 || true )
 						getNumberClicked( mouse.x, mouse.y );
+					break;
+				case sf::Event::MouseMoved:
 					break;
 				default:
 					break;
 			}
 		}
+		mouse = sf::Mouse::getPosition( win );
+		pointer.setPosition( win.mapPixelToCoords(mouse) );
+		//mose.setPosition( sf::Vector2f( sf::Mouse::getPosition( win ) ) );
+		//mose.setPosition( static_cast<sf::Vector2f>( sf::Mouse::getPosition( win ) ) );
 		win.clear();
 		win.draw( usableArea );
 		for( int i = 0; i < 100; i++ ) {
@@ -185,10 +192,7 @@ int main() {
 			}
 		}
 		win.draw( titleText );
-		for( int i = 0; i < H; i+=200 ) {
-			hundredPixels.setPosition(8,i);
-			win.draw( hundredPixels );
-		}
+		win.draw( pointer );
 		win.display();
 		t.ProcessFrame( t.actFrame );
 	}
