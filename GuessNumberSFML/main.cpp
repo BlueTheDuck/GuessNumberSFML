@@ -1,6 +1,8 @@
-#include <SFML\Window.hpp>
+
+
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+#include <SFML\Window.hpp>
 #include <ctime>
 #include <iostream>
 #include <string>
@@ -38,7 +40,7 @@ as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
 /*--[[Square showing number]]--*/
 sf::RectangleShape numPlace( sf::Vector2<float>( BUT_SIZE, BUT_SIZE ) );
 sf::Texture spNumPlaceBase;
-sf::Text number;
+sf::Text number("",bubblegum);
 int XAxisAligner = ( ( W - 200 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;//This calculates the unused width from the [usable area], then divides it by to so it can be added to the objects, centering the game in the screen
 int YAxisAligner = ( ( H - 90 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;
 /*--[[Some debugging stuff]]--*/
@@ -60,11 +62,12 @@ short tries = 5;//Tries left
 #include "functions.cpp"
 
 int main() {
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::Default );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
 
-	if( false == loadRes()  ) {//Resources loading
+	//if( false == loadRes()  ) {//Resources loading
+	if( false == loadRes() ) {
 		#ifndef _DEBUG
 		system("error.bat \"Resources loading failed\"");
 		#endif // !_DEBUG
@@ -127,7 +130,10 @@ int main() {
 		mouse = sf::Mouse::getPosition( win );
 
 		win.clear();
+		#ifdef _DEBUG
 		win.draw( usableArea );
+		#endif // _DEBUG
+
 		for( int i = 0; i < 100; i++ ) {
 			int x, y;
 			y = ( i - ( i % 10 ) ) / 10;
@@ -137,14 +143,9 @@ int main() {
 			number.setString( to_string( i ) );
 			number.setPosition( x + ( BUT_SIZE / 2 - number.getLocalBounds().width / 2 ) + XAxisAligner, y + ( BUT_SIZE / 2 - number.getLocalBounds().height / 2 ) - 5 + YAxisAligner );
 			numPlace.setPosition( x + XAxisAligner, y + YAxisAligner );
-			if( i == theChosenOne ) {
-				//number.setFillColor(sf::Color::Red);
-			}
-			//number.setFillColor( tried[i] == COLD?sf::Color::Blue:( tried[i] == WARM?sf::Color::Yellow:sf::Color::Red ) );
 			if( tried[i] == COLD )
 				number.setFillColor( sf::Color::Blue );
 			else if( tried[i] == WARM )
-
 				number.setFillColor( sf::Color::Yellow );
 			else if( tried[i] == HOT )
 				number.setFillColor( sf::Color::Red );
@@ -152,8 +153,8 @@ int main() {
 				number.setFillColor( sf::Color::Green );
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
-			win.draw( numPlace );
-			win.draw( number );
+			//win.draw( numPlace );
+			//win.draw( number );
 		}
 		win.draw( titleText );
 		#ifdef _DEBUG

@@ -1,3 +1,5 @@
+#ifndef PROGRAM_FUNCTIONS
+#define PROGRAM_FUNCTIONS
 ////Functions\\\\
 //Functionality
 void centerText( sf::Text *t, sf::Vector2<int> cd );//Duh...
@@ -82,11 +84,15 @@ int hintPlayer() {
 }
 
 //Startup
+bool resourcesLoaded = false;
 bool loadRes() {
 	string res = "Res\\";
-	return bubblegum.loadFromFile( res + "Bubblegum.ttf" ) &&
-		spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
+	if( resourcesLoaded == false ) {
+		resourcesLoaded = (bubblegum).loadFromFile( res + "Bubblegum.ttf" ) &&
+			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
+	}
 
+	return resourcesLoaded;
 }
 
 void init() {//This function should run every time the game is initialized
@@ -123,3 +129,4 @@ void initObjects() {//This function should only run ONCE
 	usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
 	pointer.setFillColor( sf::Color::Red );
 }
+#endif
