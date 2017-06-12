@@ -40,15 +40,20 @@ int getNumberClicked( int x, int y ) {
 void winGame() {
 	std::cout << "Win";
 	tried[theChosenOne] = WIN;
-
+	//titleText.setPosition( W / 2, H / 2 );
+	titleText.setString("WIN!");
+	titleText.setOrigin( titleText.getGlobalBounds().width / 2, titleText.getGlobalBounds().height / 2 );
+	titleText.setFillColor(sf::Color::Green);
+	titleText.setOutlineColor( sf::Color( 0, 218, 0 ) );
+	centerText( &titleText, sf::Vector2i( W, H / 2 ) );
 }
 
 int hintPlayer() {
 	unsigned int nearRange = COLD;//If it isn't warm or hot, then use the default value: Cold
 	std::cout << "Generating hint\n";
 
-	short hotMinRange = theChosenOne - 3, hotMaxRange = theChosenOne + 3;
-	short warmMinRange = theChosenOne - 5, warmMaxRange = theChosenOne + 5;
+	short hotMinRange = theChosenOne - 4, hotMaxRange = theChosenOne + 4;//Check if maginNumber is near 4 nums > hot
+	short warmMinRange = theChosenOne - 7, warmMaxRange = theChosenOne + 7;//Check if maginNumber is near 7 nums > warm
 
 	//Check if the ranging numbers are offset
 	{
@@ -85,11 +90,14 @@ int hintPlayer() {
 
 //Startup
 bool resourcesLoaded = false;
-bool loadRes() {
+bool loadRes() {//This should only run ONCE
 	string res = "Res\\";
 	if( resourcesLoaded == false ) {
-		resourcesLoaded = (bubblegum).loadFromFile( res + "Bubblegum.ttf" ) &&
-			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
+		/*resourcesLoaded = (bubblegum).loadFromFile( res + "Bubblegum.ttf" ) &&
+			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );*/
+		std::cout << ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" );
+		std::cout << spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
+		resourcesLoaded = true;
 	}
 
 	return resourcesLoaded;
@@ -98,21 +106,22 @@ bool loadRes() {
 void init() {//This function should run every time the game is initialized
 	for( int i = 0; i < 100; i++ ) tried[i] = 0;
 	srand( time( NULL ) );
-	magicNumber = ( (float)rand() / RAND_MAX * 100 );
+	magicNumber = rand() % 100;//( (float)rand() / RAND_MAX * 100 );
 	#ifdef _DEBUG
 	std::cout << "Magic number: " << magicNumber;
 	#endif
-	//tried = { 3 };
-}
-
-void initObjects() {//This function should only run ONCE
-	//Title
-	titleText.setFont( bubblegum );
+	//Title (Changed during void winGame())
+	titleText.setFillColor( sf::Color::White );
 	titleText.setOutlineColor( sf::Color( 242, 156, 216 ) );
 	titleText.setOutlineThickness( 2 );
 	titleText.setString( "Guessing Game!" );
 	titleText.setOrigin( titleText.getGlobalBounds().width / 2, titleText.getGlobalBounds().height / 2 );
 	centerText( &titleText, sf::Vector2<int>( W, 50 ) );
+}
+
+void initObjects() {//This function should only run ONCE
+	//Title (generic)
+	titleText.setFont( bubblegum );
 	titleText.setRotation( -15 / 4 );
 	t.Rotate( 15 / 2, false, 0, t.frames / 2 );
 	t.Rotate( -15 / 2, false, t.frames / 2, t.frames );

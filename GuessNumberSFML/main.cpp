@@ -11,7 +11,7 @@
 #include <iostream>
 #endif
 
-#undef AS_SHOWFRAMEINFO
+#undef AS_SHOWFRAMEINFO//ifdef AnimsSFML will output debugging stuff
 #define W 800
 #define H 600
 #define FRAMERATE 27
@@ -26,16 +26,12 @@
 
 using namespace std;
 
-
-
 ////Variables\\\\
 //GUI vars
 sf::RenderWindow win;
-/*--[[For the title]]--*/
 sf::Font bubblegum;
+/*--[[For the title]]--*/
 sf::Text titleText;
-sf::Clock titleNextFrame;
-sf::Vector2<int> m( 50, 0 );
 as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
 /*--[[Square showing number]]--*/
 sf::RectangleShape numPlace( sf::Vector2<float>( BUT_SIZE, BUT_SIZE ) );
@@ -62,7 +58,13 @@ short tries = 5;//Tries left
 #include "functions.cpp"
 
 int main() {
+	#ifdef _DEBUG
+	std::cout << "Now we're opening the window";
+	#endif
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
+	#ifdef _DEBUG
+	std::cout << "As expected, nothings happened";
+	#endif
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
 
@@ -97,7 +99,14 @@ int main() {
 					break;
 				case sf::Event::KeyPressed:
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Escape ) ) {
-						win.close();
+						std::cout << "\nIt's ok for now\n";
+						try {
+							win.close();
+						} catch( void* ) {
+
+						}
+						std::cout << "We're closing";
+						return 0;
 						break;
 					}
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::BackSpace ) ) {
@@ -153,14 +162,13 @@ int main() {
 				number.setFillColor( sf::Color::Green );
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
-			//win.draw( numPlace );
-			//win.draw( number );
+			std::cout << "Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n";
+			win.draw( numPlace );
+			win.draw( number );
 		}
 		win.draw( titleText );
-		#ifdef _DEBUG
 		pointer.setPosition( win.mapPixelToCoords( mouse ) );
 		win.draw( pointer );
-		#endif // _DEBUG
 		win.display();
 		t.ProcessFrame( t.actFrame );
 	}
