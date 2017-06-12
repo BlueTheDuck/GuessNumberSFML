@@ -58,15 +58,12 @@ short tries = 5;//Tries left
 #include "functions.cpp"
 
 int main() {
-	#ifdef _DEBUG
 	std::cout << "Now we're opening the window";
-	#endif
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
-	#ifdef _DEBUG
 	std::cout << "As expected, nothings happened";
-	#endif
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
+	std::cout << "Works...";
 
 	//if( false == loadRes()  ) {//Resources loading
 	if( false == loadRes() ) {
@@ -78,16 +75,20 @@ int main() {
 	#ifdef _DEBUG
 	std::cout << "Resource loading finished with no problems";
 	#endif // _DEBUG
-
+	std::cout << "Rrcs OK\n";
 
 	////Object configuracion
 	initObjects();
+	std::cout << "Object initialization OK\n";
 
 	init();//Game initializacion
+	std::cout << "Game initialization OK\n";
 
 	sf::Event event;
 	while( win.isOpen() ) {
+		std::cout << "Window is open\n";
 		while( win.pollEvent( event ) ) {
+			std::cout << "Event fired";
 			switch( event.type ) {
 				case sf::Event::Closed:
 					win.close();
@@ -103,7 +104,7 @@ int main() {
 						try {
 							win.close();
 						} catch( void* ) {
-
+							std::cout << "sf::Event::KeyPressed > Error";
 						}
 						std::cout << "We're closing";
 						return 0;
@@ -163,6 +164,10 @@ int main() {
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
 			std::cout << "Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n";
+			//std::cout << "Da' pointai tu da' font iz: "; 
+			std::cout << reinterpret_cast<int>( &bubblegum ) << std::endl;
+			std::cout << reinterpret_cast<int>( &numPlace ) << std::endl;
+			std::cout << reinterpret_cast<int>( &number ) << std::endl;
 			win.draw( numPlace );
 			win.draw( number );
 			std::cout << "It works... for now\n";
