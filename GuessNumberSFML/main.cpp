@@ -165,6 +165,7 @@ int main() {
 			std::cout << "Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n";
 			win.draw( numPlace );
 			win.draw( number );
+			std::cout << "It works... for now\n";
 		}
 		win.draw( titleText );
 		pointer.setPosition( win.mapPixelToCoords( mouse ) );
