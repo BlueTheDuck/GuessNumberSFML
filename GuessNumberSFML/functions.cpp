@@ -45,18 +45,18 @@ int hintPlayer() {
 	unsigned int nearRange = COLD;//If it isn't warm or hot, then use the default value: Cold
 	std::cout << "Generating hint\n";
 
-	short hotMinRange = theChosenOne - 3, hotMaxRange = theChosenOne + 3;
-	short warmMinRange = theChosenOne - 5, warmMaxRange = theChosenOne + 5;
+	short hotMinRange = theChosenOne - 4, hotMaxRange = theChosenOne + 4;
+	short warmMinRange = theChosenOne - 7, warmMaxRange = theChosenOne + 7;
 
 	//Check if the ranging numbers are offset
 	{
 		if( hotMinRange < 0 )
 			hotMinRange += 100;
-		if( hotMaxRange > 100 )
+		if( hotMaxRange >= 100 )
 			hotMaxRange -= 100;
 		if( warmMinRange < 0 )
 			warmMinRange += 100;
-		if( warmMaxRange > 100 )
+		if( warmMaxRange >= 100 )
 			warmMaxRange -= 100;
 	}
 
