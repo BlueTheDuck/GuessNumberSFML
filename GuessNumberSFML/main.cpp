@@ -1,15 +1,17 @@
-#include <SFML\Window.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
+#include <SFML\Window.hpp>
 #include <ctime>
-#include <iostream>
 #include <string>
 
 #ifdef _DEBUG 
 #include <iostream>
+#define c(x) std::cout << x
+#else
+#define c(...)
 #endif
 
-#undef AS_SHOWFRAMEINFO
+#undef AS_SHOWFRAMEINFO//ifdef AnimsSFML will output debugging stuff
 #define W 800
 #define H 600
 #define FRAMERATE 27
@@ -24,21 +26,16 @@
 
 using namespace std;
 
-
-
 ////Variables\\\\
 //GUI vars
-sf::RenderWindow win;
-/*--[[For the title]]--*/
 sf::Font bubblegum;
+/*--[[For the title]]--*/
 sf::Text titleText;
-sf::Clock titleNextFrame;
-sf::Vector2<int> m( 50, 0 );
 as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
 /*--[[Square showing number]]--*/
 sf::RectangleShape numPlace( sf::Vector2<float>( BUT_SIZE, BUT_SIZE ) );
 sf::Texture spNumPlaceBase;
-sf::Text number;
+sf::Text number("",bubblegum);
 int XAxisAligner = ( ( W - 200 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;//This calculates the unused width from the [usable area], then divides it by to so it can be added to the objects, centering the game in the screen
 int YAxisAligner = ( ( H - 90 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;
 /*--[[Some debugging stuff]]--*/
@@ -60,11 +57,17 @@ short tries = 5;//Tries left
 #include "functions.cpp"
 
 int main() {
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::Default );
+	//std::cout << ;
+	c( "Now we're opening the window" );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
+	//std::cout << ;
+	c( "As expected, nothings happened" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
+	c("Works...");
 
-	if( false == loadRes()  ) {//Resources loading
+	//if( false == loadRes()  ) {//Resources loading
+	if( false == loadRes() ) {
 		#ifndef _DEBUG
 		system("error.bat \"Resources loading failed\"");
 		#endif // !_DEBUG
@@ -73,12 +76,14 @@ int main() {
 	#ifdef _DEBUG
 	std::cout << "Resource loading finished with no problems";
 	#endif // _DEBUG
-
+	c("Rrcs OK\n");
 
 	////Object configuracion
 	initObjects();
+	c("Object initialization OK\n");
 
 	init();//Game initializacion
+	c("Game initialization OK\n");
 
 	sf::Event event;
 	while( win.isOpen() ) {
@@ -94,7 +99,14 @@ int main() {
 					break;
 				case sf::Event::KeyPressed:
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Escape ) ) {
-						win.close();
+						c("\nIt's ok for now\n");
+						try {
+							win.close();
+						} catch( void* ) {
+							c("sf::Event::KeyPressed > Error");
+						}
+						c("We're closing");
+						return 0;
 						break;
 					}
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::BackSpace ) ) {
@@ -106,7 +118,7 @@ int main() {
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::R ) ) init();
 					break;
 				case sf::Event::MouseButtonPressed:
-					std::cout << "( " << mouse.x << "; " << mouse.y << " )\n";
+					c("( " << mouse.x << "; " << mouse.y << " )\n");
 					//std::cout << "( " << mose.getPosition().x << "; " << mose.getPosition().y << " )\n";
 					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 ) {
 						theChosenOne = getNumberClicked( mouse.x, mouse.y );
@@ -127,7 +139,10 @@ int main() {
 		mouse = sf::Mouse::getPosition( win );
 
 		win.clear();
+		#ifdef _DEBUG
 		win.draw( usableArea );
+		#endif // _DEBUG
+
 		for( int i = 0; i < 100; i++ ) {
 			int x, y;
 			y = ( i - ( i % 10 ) ) / 10;
@@ -137,14 +152,9 @@ int main() {
 			number.setString( to_string( i ) );
 			number.setPosition( x + ( BUT_SIZE / 2 - number.getLocalBounds().width / 2 ) + XAxisAligner, y + ( BUT_SIZE / 2 - number.getLocalBounds().height / 2 ) - 5 + YAxisAligner );
 			numPlace.setPosition( x + XAxisAligner, y + YAxisAligner );
-			if( i == theChosenOne ) {
-				//number.setFillColor(sf::Color::Red);
-			}
-			//number.setFillColor( tried[i] == COLD?sf::Color::Blue:( tried[i] == WARM?sf::Color::Yellow:sf::Color::Red ) );
 			if( tried[i] == COLD )
 				number.setFillColor( sf::Color::Blue );
 			else if( tried[i] == WARM )
-
 				number.setFillColor( sf::Color::Yellow );
 			else if( tried[i] == HOT )
 				number.setFillColor( sf::Color::Red );
@@ -152,14 +162,14 @@ int main() {
 				number.setFillColor( sf::Color::Green );
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
+			if(i==1&&false)c("Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n");
 			win.draw( numPlace );
 			win.draw( number );
+			if(i==1&&false)c("It works... for now\n");
 		}
 		win.draw( titleText );
-		#ifdef _DEBUG
 		pointer.setPosition( win.mapPixelToCoords( mouse ) );
 		win.draw( pointer );
-		#endif // _DEBUG
 		win.display();
 		t.ProcessFrame( t.actFrame );
 	}
