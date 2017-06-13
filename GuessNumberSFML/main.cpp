@@ -1,14 +1,14 @@
-
-
 #include <SFML\System.hpp>
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 #include <ctime>
-#include <iostream>
 #include <string>
 
 #ifdef _DEBUG 
 #include <iostream>
+#define c(x) std::cout << x
+#else
+#define c(...)
 #endif
 
 #undef AS_SHOWFRAMEINFO//ifdef AnimsSFML will output debugging stuff
@@ -28,7 +28,6 @@ using namespace std;
 
 ////Variables\\\\
 //GUI vars
-sf::RenderWindow win;
 sf::Font bubblegum;
 /*--[[For the title]]--*/
 sf::Text titleText;
@@ -58,12 +57,14 @@ short tries = 5;//Tries left
 #include "functions.cpp"
 
 int main() {
-	std::cout << "Now we're opening the window";
+	//std::cout << ;
+	c( "Now we're opening the window" );
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
-	std::cout << "As expected, nothings happened";
+	//std::cout << ;
+	c( "As expected, nothings happened" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
-	std::cout << "Works...";
+	c("Works...");
 
 	//if( false == loadRes()  ) {//Resources loading
 	if( false == loadRes() ) {
@@ -75,20 +76,18 @@ int main() {
 	#ifdef _DEBUG
 	std::cout << "Resource loading finished with no problems";
 	#endif // _DEBUG
-	std::cout << "Rrcs OK\n";
+	c("Rrcs OK\n");
 
 	////Object configuracion
 	initObjects();
-	std::cout << "Object initialization OK\n";
+	c("Object initialization OK\n");
 
 	init();//Game initializacion
-	std::cout << "Game initialization OK\n";
+	c("Game initialization OK\n");
 
 	sf::Event event;
 	while( win.isOpen() ) {
-		std::cout << "Window is open\n";
 		while( win.pollEvent( event ) ) {
-			std::cout << "Event fired";
 			switch( event.type ) {
 				case sf::Event::Closed:
 					win.close();
@@ -100,13 +99,13 @@ int main() {
 					break;
 				case sf::Event::KeyPressed:
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Escape ) ) {
-						std::cout << "\nIt's ok for now\n";
+						c("\nIt's ok for now\n");
 						try {
 							win.close();
 						} catch( void* ) {
-							std::cout << "sf::Event::KeyPressed > Error";
+							c("sf::Event::KeyPressed > Error");
 						}
-						std::cout << "We're closing";
+						c("We're closing");
 						return 0;
 						break;
 					}
@@ -119,7 +118,7 @@ int main() {
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::R ) ) init();
 					break;
 				case sf::Event::MouseButtonPressed:
-					std::cout << "( " << mouse.x << "; " << mouse.y << " )\n";
+					c("( " << mouse.x << "; " << mouse.y << " )\n");
 					//std::cout << "( " << mose.getPosition().x << "; " << mose.getPosition().y << " )\n";
 					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 ) {
 						theChosenOne = getNumberClicked( mouse.x, mouse.y );
@@ -163,14 +162,10 @@ int main() {
 				number.setFillColor( sf::Color::Green );
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
-			std::cout << "Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n";
-			//std::cout << "Da' pointai tu da' font iz: "; 
-			std::cout << reinterpret_cast<int>( &bubblegum ) << std::endl;
-			std::cout << reinterpret_cast<int>( &numPlace ) << std::endl;
-			std::cout << reinterpret_cast<int>( &number ) << std::endl;
+			if(i==1&&false)c("Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n");
 			win.draw( numPlace );
 			win.draw( number );
-			std::cout << "It works... for now\n";
+			if(i==1&&false)c("It works... for now\n");
 		}
 		win.draw( titleText );
 		pointer.setPosition( win.mapPixelToCoords( mouse ) );

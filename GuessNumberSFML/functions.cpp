@@ -22,11 +22,11 @@ int getNumberClicked( int x, int y ) {
 	int number = -1;//Clicked number, if [number]<0||[number]>99 then nothing was clicked
 	for( int col = 0; col <= 10; col++ ) {
 		if( boardClick.x > col*( BUT_SIZE + ROW_PADDING ) && boardClick.x < ( col*( BUT_SIZE + ROW_PADDING ) ) + BUT_SIZE ) {
-			std::cout << "X: " << col << std::endl;
+			c("X: " << col << std::endl);
 			gridClick.x = col;
 		}
 		if( boardClick.y > col*( BUT_SIZE + ROW_PADDING ) && boardClick.y < ( col*( BUT_SIZE + ROW_PADDING ) ) + BUT_SIZE ) {
-			std::cout << "Y: " << col << std::endl;
+			c("Y: " << col << std::endl);
 			gridClick.y = col;
 		}
 	}
@@ -38,7 +38,7 @@ int getNumberClicked( int x, int y ) {
 }
 
 void winGame() {
-	std::cout << "Win";
+	c("Win");
 	tried[theChosenOne] = WIN;
 	//titleText.setPosition( W / 2, H / 2 );
 	titleText.setString("WIN!");
@@ -50,7 +50,7 @@ void winGame() {
 
 int hintPlayer() {
 	unsigned int nearRange = COLD;//If it isn't warm or hot, then use the default value: Cold
-	std::cout << "Generating hint\n";
+	c("Generating hint\n");
 
 	short hotMinRange = theChosenOne - 4, hotMaxRange = theChosenOne + 4;//Check if maginNumber is near 4 nums > hot
 	short warmMinRange = theChosenOne - 7, warmMaxRange = theChosenOne + 7;//Check if maginNumber is near 7 nums > warm
@@ -73,13 +73,13 @@ int hintPlayer() {
 		nearRange = HOT;
 	switch( nearRange ) {
 		case 3:
-			std::cout << "Cold";
+			c("Cold");
 			break;
 		case 2:
-			std::cout << "Warm";
+			c("Warm");
 			break;
 		case 1:
-			std::cout << "Hot";
+			c("Hot");
 			break;
 		default:
 			break;
@@ -93,13 +93,13 @@ bool resourcesLoaded = false;
 bool loadRes() {//This should only run ONCE
 	string res = "Res\\";
 	if( resourcesLoaded == false ) {
-		/*resourcesLoaded = (bubblegum).loadFromFile( res + "Bubblegum.ttf" ) &&
-			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );*/
-		std::cout << ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" );
-		std::cout << spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
-		resourcesLoaded = true;
+		resourcesLoaded = (bubblegum).loadFromFile( res + "Bubblegum.ttf" ) &&
+			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
+		/*std::cout << ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" );
+		std::cout << spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );*/
+		//resourcesLoaded = true;
 	}
-
+	c(resourcesLoaded);
 	return resourcesLoaded;
 }
 
