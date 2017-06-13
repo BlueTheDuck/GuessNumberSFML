@@ -29,6 +29,9 @@ using namespace std;
 ////Variables\\\\
 //GUI vars
 sf::Font bubblegum;
+/*--[[Hearts]]--*/
+sf::Texture spHeart;
+sf::RectangleShape rHeart;
 /*--[[For the title]]--*/
 sf::Text titleText;
 as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
@@ -64,7 +67,7 @@ int main() {
 	c( "As expected, nothings happened" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
-	c("Works...");
+	c( "Works..." );
 
 	//if( false == loadRes()  ) {//Resources loading
 	if( false == loadRes() ) {
@@ -143,7 +146,10 @@ int main() {
 		#ifdef _DEBUG
 		win.draw( usableArea );
 		#endif // _DEBUG
+		
+		for( int i = 0; i < tries; i++ ) {
 
+		}
 		for( int i = 0; i < 100; i++ ) {
 			int x, y;
 			y = ( i - ( i % 10 ) ) / 10;

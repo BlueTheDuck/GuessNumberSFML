@@ -93,8 +93,8 @@ bool resourcesLoaded = false;
 bool loadRes() {//This should only run ONCE
 	string res = "Res\\";
 	if( resourcesLoaded == false ) {
-		resourcesLoaded = (bubblegum).loadFromFile( res + "Bubblegum.ttf" ) &&
-			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );
+		resourcesLoaded = ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" ) &&
+			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" ) && spHeart.loadFromFile( res + "Corazon.png" );
 		/*std::cout << ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" );
 		std::cout << spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );*/
 		//resourcesLoaded = true;
@@ -133,6 +133,8 @@ void initObjects() {//This function should only run ONCE
 	number.setOutlineColor( sf::Color::Black );
 	number.setOutlineThickness( 1 );
 	number.setString( "0" );
+	//Hearts
+
 	//Debugging stuff
 	usableArea.setPosition( sf::Vector2<float>( ( float )100.0, ( float )90.0 ) );
 	usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
