@@ -54,16 +54,16 @@ int hintPlayer() {
 
 	short hotMinRange = theChosenOne - 4, hotMaxRange = theChosenOne + 4;//Check if maginNumber is near 4 nums > hot
 	short warmMinRange = theChosenOne - 7, warmMaxRange = theChosenOne + 7;//Check if maginNumber is near 7 nums > warm
-
+  
 	//Check if the ranging numbers are offset
 	{
 		if( hotMinRange < 0 )
 			hotMinRange += 100;
-		if( hotMaxRange > 100 )
+		if( hotMaxRange >= 100 )
 			hotMaxRange -= 100;
 		if( warmMinRange < 0 )
 			warmMinRange += 100;
-		if( warmMaxRange > 100 )
+		if( warmMaxRange >= 100 )
 			warmMaxRange -= 100;
 	}
 
