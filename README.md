@@ -13,6 +13,6 @@ Fuck the class and everything there. In my game there will be a title constatly 
 
 ### Available resources:
 <b>Bubblegum</b>: A cute font with rounded letters<br>
-<b>Adobe Illustrator</b>: SVG image editor
+<b>Adobe Illustrator</b>: SVG image editor<br>
 <b>C++</b>: The programming language that we use in the class<br>
 <b>SFML</b>: The library used in the GUI<br>
