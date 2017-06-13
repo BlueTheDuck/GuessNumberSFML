@@ -1,5 +1,6 @@
 # GuessNumberSFML
 This is the homework given to the class. The task is to make a "simple" game that asks you to write a number, and the game says if your are "cold", "warm" or "hot"
+Current stable ver.: Beta 1
 
 ### Extra info
 Of course, I wasn't going to make a "simple game", that would be way to easy; that's  why I decided to implement a GUI with some animations (Refer to the repository "AnimsSFML").
@@ -12,5 +13,6 @@ Fuck the class and everything there. In my game there will be a title constatly 
 
 ### Available resources:
 <b>Bubblegum</b>: A cute font with rounded letters<br>
+<b>Adobe Illustrator</b>: SVG image editor
 <b>C++</b>: The programming language that we use in the class<br>
 <b>SFML</b>: The library used in the GUI<br>
