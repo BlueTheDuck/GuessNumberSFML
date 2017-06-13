@@ -95,7 +95,7 @@ bool loadRes() {//This should only run ONCE
 	if( resourcesLoaded == false ) {
 		resourcesLoaded = ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" ) &&
 			spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" ) && 
-			spHeart.loadFromFile( res + "Corazon.png" );
+			spHeart.loadFromFile( res + "Heart.png" );
 		/*std::cout << ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" );
 		std::cout << spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );*/
 		//resourcesLoaded = true;
