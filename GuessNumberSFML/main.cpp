@@ -38,17 +38,17 @@ as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
 /*--[[Square showing number]]--*/
 sf::RectangleShape numPlace( sf::Vector2<float>( BUT_SIZE, BUT_SIZE ) );
 sf::Texture spNumPlaceBase;
-sf::Text number("",bubblegum);
+sf::Text number( "", bubblegum );
 int XAxisAligner = ( ( W - 200 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;//This calculates the unused width from the [usable area], then divides it by to so it can be added to the objects, centering the game in the screen
 int YAxisAligner = ( ( H - 90 ) - ( BUT_SIZE * 10 + ROW_PADDING * 9 ) ) / 2;
 /*--[[Some debugging stuff]]--*/
 sf::RectangleShape usableArea( sf::Vector2<float>( W - 200, H - 90 ) );
 sf::CircleShape pointer( 3 );
 //Mechanics vars
-sf::Vector2i mouse(0,0);
+sf::Vector2i mouse( 0, 0 );
 int theChosenOne = -1;
 int magicNumber = 1;
-int * tried = new int(100);//This var stores the numbers that were tried and their result
+int * tried = new int( 100 );//This var stores the numbers that were tried and their result
 /* 0: Nothings
    1: Cold
    2: Warm
@@ -57,58 +57,63 @@ int * tried = new int(100);//This var stores the numbers that were tried and the
 */
 short tries = 5;//Tries left
 
+#define c(x) std::cout << x
+#include <iostream>
+
 #include "functions.cpp"
 
 int main() {
-	//std::cout << ;
-	c( "Now we're opening the window" );
+	c( "Now we're opening the window\n" );
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
-	//std::cout << ;
-	c( "As expected, nothings happened" );
+	c( "As expected, nothings happened\n" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
-	c( "Works..." );
+	c( "Works...\n" );
+	
+	t.onAnimationEnd.operator=( &processEventTest<sf::Text*> );//Set the onAnimationEnd for the [t] animation
 
-	//if( false == loadRes()  ) {//Resources loading
-	if( false == loadRes() ) {
+	if( false == loadRes() ) {//Resources loading
 		#ifndef _DEBUG
-		system("error.bat \"Resources loading failed\"");
+		system( "error.bat \"Resources loading failed\"" );
 		#endif // !_DEBUG
 		return EXIT_FAILURE;
 	}
 	#ifdef _DEBUG
 	std::cout << "Resource loading finished with no problems";
 	#endif // _DEBUG
-	c("Rrcs OK\n");
+	c( "Rrcs OK\n" );
 
 	////Object configuracion
 	initObjects();
-	c("Object initialization OK\n");
+	c( "Object initialization OK\n" );
 
 	init();//Game initializacion
-	c("Game initialization OK\n");
-
+	c( "Game initialization OK\n" );
+	c( "Can we start? " << win.isOpen() << std::endl );
 	sf::Event event;
 	while( win.isOpen() ) {
 		while( win.pollEvent( event ) ) {
 			switch( event.type ) {
 				case sf::Event::Closed:
+					c( "Closing!" );
 					win.close();
 					break;
 				case sf::Event::Resized:
-					{
+				{
 					sf::FloatRect visibleArea( 0, 0, event.size.width, event.size.height );
-					win.setView( sf::View( visibleArea ) );}
-					break;
+					win.setView( sf::View( visibleArea ) );
+				}
+				break;
 				case sf::Event::KeyPressed:
+					c( "Key pressed\n" );
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::Escape ) ) {
-						c("\nIt's ok for now\n");
+						c( "\nIt's ok for now\n" );
 						try {
 							win.close();
 						} catch( void* ) {
-							c("sf::Event::KeyPressed > Error");
+							c( "sf::Event::KeyPressed > Error" );
 						}
-						c("We're closing");
+						c( "We're closing\n" );
 						return 0;
 						break;
 					}
@@ -121,7 +126,7 @@ int main() {
 					if( sf::Keyboard::isKeyPressed( sf::Keyboard::R ) ) init();
 					break;
 				case sf::Event::MouseButtonPressed:
-					c("( " << mouse.x << "; " << mouse.y << " )\n");
+					c( "( " << mouse.x << "; " << mouse.y << " )\n" );
 					//std::cout << "( " << mose.getPosition().x << "; " << mose.getPosition().y << " )\n";
 					if( mouse.y >= 90 && mouse.x >= 100 && mouse.x <= W - 100 ) {
 						theChosenOne = getNumberClicked( mouse.x, mouse.y );
@@ -132,9 +137,8 @@ int main() {
 						}
 					}
 					break;
-				case sf::Event::MouseMoved:
-					break;
 				default:
+					c( "I don't want this shit...(" << event.type << ")\n" );
 					break;
 
 			}
@@ -146,7 +150,7 @@ int main() {
 		#ifdef _DEBUG
 		win.draw( usableArea );
 		#endif // _DEBUG
-		
+
 		for( int i = 0; i < tries; i++ ) {
 
 		}
@@ -169,10 +173,10 @@ int main() {
 				number.setFillColor( sf::Color::Green );
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
-			if(i==1&&false)c("Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n");
+			if( i == 1 && false )c( "Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n" );
 			win.draw( numPlace );
 			win.draw( number );
-			if(i==1&&false)c("It works... for now\n");
+			if( i == 1 && false )c( "It works... for now\n" );
 		}
 		win.draw( titleText );
 		pointer.setPosition( win.mapPixelToCoords( mouse ) );

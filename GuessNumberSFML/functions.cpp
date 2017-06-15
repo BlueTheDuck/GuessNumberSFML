@@ -52,25 +52,14 @@ int hintPlayer() {
 	unsigned int nearRange = COLD;//If it isn't warm or hot, then use the default value: Cold
 	c("Generating hint\n");
 
-	short hotMinRange = theChosenOne - 4, hotMaxRange = theChosenOne + 4;//Check if maginNumber is near 4 nums > hot
-	short warmMinRange = theChosenOne - 7, warmMaxRange = theChosenOne + 7;//Check if maginNumber is near 7 nums > warm
-  
-	//Check if the ranging numbers are offset
-	{
-		if( hotMinRange < 0 )
-			hotMinRange += 100;
-		if( hotMaxRange >= 100 )
-			hotMaxRange -= 100;
-		if( warmMinRange < 0 )
-			warmMinRange += 100;
-		if( warmMaxRange >= 100 )
-			warmMaxRange -= 100;
+	int dist = theChosenOne - magicNumber;
+	if( dist < 0 ) dist *= -1;
+	if( dist < 4 ) {
+		nearRange = HOT;
+	} else if( dist < 7 ) {
+		nearRange = WARM;
 	}
 
-	if( warmMinRange < magicNumber && warmMaxRange > magicNumber )//Warm
-		nearRange = WARM;
-	if( hotMinRange < magicNumber && hotMaxRange > magicNumber )//Hot
-		nearRange = HOT;
 	switch( nearRange ) {
 		case 3:
 			c("Cold");
@@ -141,4 +130,11 @@ void initObjects() {//This function should only run ONCE
 	usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
 	pointer.setFillColor( sf::Color::Red );
 }
+
+template <typename T>
+bool processEventTest( as::Animation<T> *const ptr ) {
+	std::cout << "Event finished. ID: " << (*ptr).ID << "\n";
+	return true;
+}
+
 #endif
