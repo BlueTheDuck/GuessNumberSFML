@@ -70,7 +70,7 @@ int main() {
 	win.setMouseCursorVisible( false );
 	c( "Works...\n" );
 	
-	t.onAnimationEnd.operator=( &processEventTest<sf::Text*> );//Set the onAnimationEnd for the [t] animation
+	//t.onAnimationEnd.operator=( &processEventTest<sf::Text*> );//Set the onAnimationEnd for the [t] animation
 
 	if( false == loadRes() ) {//Resources loading
 		#ifndef _DEBUG

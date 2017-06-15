@@ -131,10 +131,10 @@ void initObjects() {//This function should only run ONCE
 	pointer.setFillColor( sf::Color::Red );
 }
 
-template <typename T>
+/*template <typename T>
 bool processEventTest( as::Animation<T> *const ptr ) {
 	std::cout << "Event finished. ID: " << (*ptr).ID << "\n";
 	return true;
-}
+}*/
 
 #endif
