@@ -88,6 +88,8 @@ bool loadRes() {//This should only run ONCE
 		/*std::cout << ( bubblegum ).loadFromFile( res + "Bubblegum.ttf" );
 		std::cout << spNumPlaceBase.loadFromFile( res + "PlaceholderForNums.png" );*/
 		//resourcesLoaded = true;
+		spNumPlaceBase.setSmooth( true );
+		spHeart.setSmooth( true );
 	}
 	c(resourcesLoaded);
 	return resourcesLoaded;

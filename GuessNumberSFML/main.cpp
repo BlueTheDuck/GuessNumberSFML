@@ -62,12 +62,16 @@ short tries = 5;//Tries left
 
 #include "functions.cpp"
 
+sf::ContextSettings wcs;
+
 int main() {
+	wcs.antialiasingLevel = 2;
 	c( "Now we're opening the window\n" );
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None,wcs );
 	c( "As expected, nothings happened\n" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
+	//win.getSettings = wcs;
 	c( "Works...\n" );
 	
 	//t.onAnimationEnd.operator=( &processEventTest<sf::Text*> );//Set the onAnimationEnd for the [t] animation
