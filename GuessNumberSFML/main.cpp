@@ -62,12 +62,12 @@ short tries = 5;//Tries left
 
 #include "functions.cpp"
 
-sf::ContextSettings wcs;
-
 int main() {
+
+	sf::ContextSettings wcs;
 	wcs.antialiasingLevel = 2;
 	c( "Now we're opening the window\n" );
-	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None,wcs );
+	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None, wcs );
 	c( "As expected, nothings happened\n" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
@@ -151,13 +151,12 @@ int main() {
 		mouse = sf::Mouse::getPosition( win );
 
 		win.clear();
-		#ifdef _DEBUG
 		win.draw( usableArea );
-		#endif // _DEBUG
-
+		
 		for( int i = 0; i < tries; i++ ) {
 
 		}
+
 		for( int i = 0; i < 100; i++ ) {
 			int x, y;
 			y = ( i - ( i % 10 ) ) / 10;
@@ -182,6 +181,7 @@ int main() {
 			win.draw( number );
 			if( i == 1 && false )c( "It works... for now\n" );
 		}
+
 		win.draw( titleText );
 		pointer.setPosition( win.mapPixelToCoords( mouse ) );
 		win.draw( pointer );
