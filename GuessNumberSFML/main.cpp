@@ -21,6 +21,8 @@
 #define HOT 1
 #define BUT_SIZE 40
 #define ROW_PADDING 5
+#define HEART_SIZE 40
+#define LIVES 20
 
 #include "../../AnimsSFML/AnimsSFML/anims.cpp"
 
@@ -31,7 +33,7 @@ using namespace std;
 sf::Font bubblegum;
 /*--[[Hearts]]--*/
 sf::Texture spHeart;
-sf::RectangleShape rHeart;
+sf::RectangleShape rHeart( sf::Vector2<float>( HEART_SIZE, HEART_SIZE ) );
 /*--[[For the title]]--*/
 sf::Text titleText;
 as::Animation<sf::Text*> t( &titleText, ( FRAMERATE * 0.5 ) );
@@ -71,11 +73,8 @@ int main() {
 	c( "As expected, nothings happened\n" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
-	//win.getSettings = wcs;
 	c( "Works...\n" );
 	
-	//t.onAnimationEnd.operator=( &processEventTest<sf::Text*> );//Set the onAnimationEnd for the [t] animation
-
 	if( false == loadRes() ) {//Resources loading
 		#ifndef _DEBUG
 		system( "error.bat \"Resources loading failed\"" );
@@ -105,8 +104,7 @@ int main() {
 				case sf::Event::Resized:
 				{
 					sf::FloatRect visibleArea( 0, 0, event.size.width, event.size.height );
-					win.setView( sf::View( visibleArea ) );
-				}
+					win.setView( sf::View( visibleArea ) );}
 				break;
 				case sf::Event::KeyPressed:
 					c( "Key pressed\n" );
@@ -137,6 +135,7 @@ int main() {
 						if( theChosenOne == magicNumber ) {
 							winGame();
 						} else {
+							tries--;
 							hintPlayer();
 						}
 					}
@@ -153,8 +152,16 @@ int main() {
 		win.clear();
 		win.draw( usableArea );
 		
-		for( int i = 0; i < tries; i++ ) {
-
+		for( int i = 0; i < tries; i++ ) {//0-4
+			int x = i % 3;
+			int y = (i - x)/3;
+			/*
+			i	0	1	2	3	4
+			x	0	1	2	0	1
+			y	0	0	0	3	3
+			*/
+			rHeart.setPosition( W - HEART_SIZE*( x + 1 ), HEART_SIZE * (y/3) );
+			win.draw( rHeart );
 		}
 
 		for( int i = 0; i < 100; i++ ) {
@@ -176,10 +183,8 @@ int main() {
 				number.setFillColor( sf::Color::Green );
 			else
 				number.setFillColor( sf::Color( 197, 255, 255 ) );
-			if( i == 1 && false )c( "Now we are drawing the tricky shitty motherfucker part (like, FUCKIT!)\n" );
 			win.draw( numPlace );
 			win.draw( number );
-			if( i == 1 && false )c( "It works... for now\n" );
 		}
 
 		win.draw( titleText );

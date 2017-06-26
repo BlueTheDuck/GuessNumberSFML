@@ -109,6 +109,7 @@ void init() {//This function should run every time the game is initialized
 	titleText.setString( "Guessing Game!" );
 	titleText.setOrigin( titleText.getGlobalBounds().width / 2, titleText.getGlobalBounds().height / 2 );
 	centerText( &titleText, sf::Vector2<int>( W, 50 ) );
+	tries = LIVES;
 }
 
 void initObjects() {//This function should only run ONCE
@@ -126,7 +127,7 @@ void initObjects() {//This function should only run ONCE
 	number.setOutlineThickness( 1 );
 	number.setString( "0" );
 	//Hearts
-
+	rHeart.setTexture( &spHeart );
 	//Debugging stuff
 	usableArea.setPosition( sf::Vector2<float>( ( float )100.0, ( float )90.0 ) );
 	usableArea.setFillColor( sf::Color( 25, 25, 25 ) );
