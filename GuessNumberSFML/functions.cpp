@@ -6,6 +6,8 @@ void centerText( sf::Text *t, sf::Vector2<int> cd );//Duh...
 int getNumberClicked( int x, int y );
 void winGame();
 int hintPlayer();
+void drawGui( sf::RenderWindow & win );
+void processCommand( std::string cmd, std::string arg1, std::string arg2 );
 //Startup
 bool loadRes();//Find and load resources
 void init();//Reset game data to play again
@@ -140,4 +142,115 @@ bool processEventTest( as::Animation<T> *const ptr ) {
 	return true;
 }*/
 
+void drawGui( sf::RenderWindow &win ) {
+	win.clear();
+	win.draw( usableArea );
+
+	#define COLS 5
+	for( int i = 0; i < tries; i++ ) {//0-4
+		int x = i % COLS;
+		int y = ( i - x ) / COLS;
+		rHeart.setPosition( W - HEART_SIZE*( x + 1 ), HEART_SIZE * ( y ) );
+		win.draw( rHeart );
+	}
+
+	for( int i = 0; i < 100; i++ ) {
+		int x, y;
+		y = ( i - ( i % 10 ) ) / 10;
+		x = i % 10;
+		y = y * ( BUT_SIZE + ROW_PADDING ) + 90;
+		x = x * ( BUT_SIZE + ROW_PADDING ) + 100;
+		number.setString( to_string( i ) );
+		number.setPosition( x + ( BUT_SIZE / 2 - number.getLocalBounds().width / 2 ) + XAxisAligner, y + ( BUT_SIZE / 2 - number.getLocalBounds().height / 2 ) - 5 + YAxisAligner );
+		numPlace.setPosition( x + XAxisAligner, y + YAxisAligner );
+		if( tried[i] == COLD )
+			number.setFillColor( sf::Color::Blue );
+		else if( tried[i] == WARM )
+			number.setFillColor( sf::Color::Yellow );
+		else if( tried[i] == HOT )
+			number.setFillColor( sf::Color::Red );
+		else  if( tried[i] == WIN )
+			number.setFillColor( sf::Color::Green );
+		else
+			number.setFillColor( sf::Color( 197, 255, 255 ) );
+		win.draw( numPlace );
+		win.draw( number );
+	}
+
+	win.draw( titleText );
+	pointer.setPosition( win.mapPixelToCoords( mouse ) );
+	win.draw( pointer );
+	win.display();
+	t.ProcessFrame( t.actFrame );
+}
+
+void debuggingThread() {
+	std::string command;
+	std::string in;
+	std::string cmd;
+	std::string arg1;
+	std::string arg2;
+	for( ;;) {
+		std::cout << ">> ";
+		std::getline(std::cin,in);
+		std::cout << in << std::endl;
+		if( in[0] == '/' ) {
+			std::cout << "That was a command\n";
+			int space = in.find( " " );
+			cmd = in.substr( 1, space - 1 );
+			int space2 = in.find( " ", space );
+			if(space2!=-1) {
+				arg1 = in.substr( space2 + 1, space2 - 1 );
+				int space3 = in.find( " ", space2 );
+				if( space3 != -1 ) {
+					arg2 = in.substr( space3 + 1, space3 - 1 );
+				} else {
+					arg2 = "";
+				}
+			} else {
+				arg1 = "";
+				arg2 = "";
+			}
+			std::cout << "'" << cmd << "','" << arg1 << "','" << arg2 << "'\n";
+			processCommand(cmd,arg1,arg2);
+		} else {
+			cmd = "";
+		}
+	}
+}
+void processCommand( std::string cmd, std::string arg1, std::string arg2 ) {
+	#define CMDS 3
+	int cmdi = -1;
+	std::string validCmds[CMDS] = {
+		"exit",
+		"set",
+		"print"
+	};
+	int vars[2] = {
+		0x0,
+		0x0
+	};
+	vars[0] = poiWin;
+	for( int i = 0; i < CMDS; i++ ) {
+		if( validCmds[i] == cmd ) {
+			cmdi = i;
+		}
+	}
+	switch( cmdi ) {
+		case 0:
+			//reinterpret_cast<sf::RenderWindow>( poiWin );
+			break;
+		case 1:
+			break;
+		case 2: {
+			int arg1i = std::stoi( arg1 );
+			printf("Addr: %i",vars[arg1i]);}
+			break;
+		case -1:
+			std::cout << "Invalid CMD";
+			break;
+		default:
+			break;
+	}
+}
 #endif

@@ -5,13 +5,18 @@
 #include <string>
 
 #ifdef _DEBUG 
+#include <thread>
 #include <iostream>
 #define c(x) std::cout << x
 #else
 #define c(...)
 #endif
 
-#undef AS_SHOWFRAMEINFO//ifdef AnimsSFML will output debugging stuff
+#define EXTRAINFO 0
+#if EXTRAINFO 1
+#define AS_SHOWFRAMEINFO//ifdef AnimsSFML will output debugging stuff
+#endif
+
 #define W 800
 #define H 600
 #define FRAMERATE 27
@@ -21,12 +26,13 @@
 #define HOT 1
 #define BUT_SIZE 40
 #define ROW_PADDING 5
-#define HEART_SIZE 40
+#define HEART_SIZE 25
 #define LIVES 20
 
 #include "../../AnimsSFML/AnimsSFML/anims.cpp"
 
 using namespace std;
+
 
 ////Variables\\\\
 //GUI vars
@@ -59,17 +65,23 @@ int * tried = new int( 100 );//This var stores the numbers that were tried and t
 */
 short tries = 5;//Tries left
 
+unsigned long poiWin = 0;
+
 #define c(x) std::cout << x
 #include <iostream>
 
 #include "functions.cpp"
 
 int main() {
-
+	#ifdef _DEBUG
+	std::thread deb(debuggingThread);
+	#endif
 	sf::ContextSettings wcs;
 	wcs.antialiasingLevel = 2;
 	c( "Now we're opening the window\n" );
 	sf::RenderWindow win( sf::VideoMode( W, H ), "Guessing Game!", sf::Style::None, wcs );
+	poiWin = reinterpret_cast<int>(&win);
+	std::cout << "Windows is localized at " << std::hex << poiWin;
 	c( "As expected, nothings happened\n" );
 	win.setFramerateLimit( FRAMERATE );
 	win.setMouseCursorVisible( false );
@@ -149,49 +161,7 @@ int main() {
 
 		mouse = sf::Mouse::getPosition( win );
 
-		win.clear();
-		win.draw( usableArea );
-		
-		for( int i = 0; i < tries; i++ ) {//0-4
-			int x = i % 3;
-			int y = (i - x)/3;
-			/*
-			i	0	1	2	3	4
-			x	0	1	2	0	1
-			y	0	0	0	3	3
-			*/
-			rHeart.setPosition( W - HEART_SIZE*( x + 1 ), HEART_SIZE * (y/3) );
-			win.draw( rHeart );
-		}
-
-		for( int i = 0; i < 100; i++ ) {
-			int x, y;
-			y = ( i - ( i % 10 ) ) / 10;
-			x = i % 10;
-			y = y * ( BUT_SIZE + ROW_PADDING ) + 90;
-			x = x * ( BUT_SIZE + ROW_PADDING ) + 100;
-			number.setString( to_string( i ) );
-			number.setPosition( x + ( BUT_SIZE / 2 - number.getLocalBounds().width / 2 ) + XAxisAligner, y + ( BUT_SIZE / 2 - number.getLocalBounds().height / 2 ) - 5 + YAxisAligner );
-			numPlace.setPosition( x + XAxisAligner, y + YAxisAligner );
-			if( tried[i] == COLD )
-				number.setFillColor( sf::Color::Blue );
-			else if( tried[i] == WARM )
-				number.setFillColor( sf::Color::Yellow );
-			else if( tried[i] == HOT )
-				number.setFillColor( sf::Color::Red );
-			else  if( tried[i] == WIN )
-				number.setFillColor( sf::Color::Green );
-			else
-				number.setFillColor( sf::Color( 197, 255, 255 ) );
-			win.draw( numPlace );
-			win.draw( number );
-		}
-
-		win.draw( titleText );
-		pointer.setPosition( win.mapPixelToCoords( mouse ) );
-		win.draw( pointer );
-		win.display();
-		t.ProcessFrame( t.actFrame );
+		drawGui(win);
 	}
 }
 
